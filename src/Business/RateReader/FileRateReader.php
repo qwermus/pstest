@@ -2,17 +2,13 @@
 
 namespace Ps\Business\RateReader;
 
+use Ps\Business\AppBusinessConfig;
 use Ps\Business\Exception\RatesAreMissingException;
 use Ps\Business\Exception\WrongRatesException;
 use Ps\Shared\PaymentTransfer;
 
 class FileRateReader implements RateReaderInterface
 {
-    /**
-     * @var string
-     */
-    private const FILE_PATH = PROJECT_DIR . '/Config/rate_mock.json';
-
     /**
      * @hint Cacher was implemented to be used with
      *
@@ -71,7 +67,7 @@ class FileRateReader implements RateReaderInterface
      */
     private function getRatesFromFile(): string
     {
-        $rates = file_get_contents(self::FILE_PATH);
+        $rates = file_get_contents(AppBusinessConfig::RATE_MOCK_FILE_PATH);
         if (!$rates) {
             throw new RatesAreMissingException('Rates not found.');
         }
