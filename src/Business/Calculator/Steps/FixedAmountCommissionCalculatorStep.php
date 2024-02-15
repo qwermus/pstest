@@ -22,9 +22,12 @@ class FixedAmountCommissionCalculatorStep implements CommissionCalculatorStepInt
      */
     public function calculate(PaymentTransfer $paymentTransfer, float $amount): float
     {
-        $rate = $this->rateReader->getRate($paymentTransfer);
+        if ($paymentTransfer->getCurrencyOrFail() === 'EUR') {
+            return $paymentTransfer->getAmountOrFail();
+        }
 
-        if ($paymentTransfer->getCurrencyOrFail() == 'EUR' || $rate == 0) {
+        $rate = $this->rateReader->getRate($paymentTransfer);
+        if ($rate == 0) {
             return $paymentTransfer->getAmountOrFail();
         }
 
